@@ -1,0 +1,97 @@
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  width: 256px;
+  height: 100vh;
+  overflow: hidden;
+  transition: width 0.2s ease-in-out;
+  &.hide {
+    width: 0;
+  }
+}
+
+.menuComponent {
+  width: 256px;
+  height: calc(100vh - 40px);
+  background-color: #f2f6fc;
+  padding-top: 40px;
+  &.articleBlock {
+    height: 100vh;
+  }
+  overflow-x: hidden;
+  overflow-y: auto;
+  .menuItem {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-left: 5px;
+    color: #333333;
+    &.absoluteItem {
+      position: absolute;
+      background-color: #f2f6fc;
+      width: 100%;
+      z-index: 900;
+      left: 0;
+      top: 0;
+    }
+    .menuTitle {
+      flex: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      height: 40px;
+      line-height: 40px;
+    }
+    &.current {
+      background-color: #ebeef5;
+    }
+    &:hover {
+      background-color: #ebeef5;
+    }
+    .menuIcon {
+      margin-right: 2px;
+      padding: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: #c0c4cc;
+      }
+      &.hidden {
+        visibility: hidden;
+      }
+      &.up {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .subMenu {
+    // 不用display: none；这样虽然没有动画效果，但是效率相对好一点
+    display: block;
+    height: auto;
+    transition: all 1s ease-in-out;
+    overflow: hidden;
+    &.hidden {
+      height: 0;
+    }
+  }
+}
+.actionItem {
+  margin: 0 5px;
+}
+.rowTr {
+  display: flex;
+}
+.popverContainer {
+  .popverItem {
+    width: 100%;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #ebeef5;
+    }
+  }
+}
