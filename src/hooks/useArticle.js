@@ -68,6 +68,10 @@ function useCategory() {
               Message.success('新增成功！');
               // console.log('values.noteId', values.noteId)
               // getList(values.noteId);
+              cloudFunc
+                .getDB()
+                .collection('articleContent')
+                .add({ articleId: res.id, addTime: new Date() });
               helper.isFuncAndRun(callback);
             } else {
               Message.error('新增失败！');

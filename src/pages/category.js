@@ -70,7 +70,9 @@ function Category(props) {
           key="article"
           onClick={() =>
             history.push(
-              `/article/${record.noteId}/${record._id}/${record.title}`,
+              `/article/${record.noteId}/${record._id}/${encodeURIComponent(
+                record.title,
+              )}`,
             )
           }
         >
@@ -95,7 +97,7 @@ function Category(props) {
       rowKey="_id"
       headerTitle={
         <span>
-          笔记分类管理: <b>{title}</b>
+          笔记分类管理: <b>{decodeURIComponent(title)}</b>
         </span>
       }
       loading={loading}

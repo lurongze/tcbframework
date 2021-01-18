@@ -5,8 +5,6 @@ import { Button, Result, Avatar, Tag, Input } from 'antd';
 import { CrownOutlined, UserOutlined, SmileOutlined } from '@ant-design/icons';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
 import useLogin from '@/hooks/useLogin';
-import Index from './index';
-import styles from './index.less';
 
 const defaultProps = {
   routes: [

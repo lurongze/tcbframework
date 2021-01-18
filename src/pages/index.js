@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Popconfirm } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { history } from 'umi';
-import events from 'events';
 import useNotes from '@/hooks/useNotes';
 function Index() {
   const [editableKeys, setEditableRowKeys] = useState([]);
@@ -69,7 +68,9 @@ function Index() {
         </a>,
         <a
           onClick={() => {
-            history.push(`/category/${record._id}/${record.title}`);
+            history.push(
+              `/category/${record._id}/${encodeURIComponent(record.title)}`,
+            );
           }}
         >
           分类管理

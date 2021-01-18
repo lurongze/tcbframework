@@ -63,7 +63,11 @@ function Category(props) {
         <a
           key="editContent"
           onClick={() =>
-            history.push(`/articleContent/${record._id}/${record.title}`)
+            history.push(
+              `/articleContent/${record._id}/${encodeURIComponent(
+                record.title,
+              )}`,
+            )
           }
         >
           编辑内容
@@ -87,7 +91,7 @@ function Category(props) {
       rowKey="_id"
       headerTitle={
         <span>
-          分类文章管理: <b>{title}</b>
+          分类文章管理: <b>{decodeURIComponent(title)}</b>
         </span>
       }
       loading={loading}
