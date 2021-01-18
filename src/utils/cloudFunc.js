@@ -1,5 +1,6 @@
 import cloudbase from '@cloudbase/js-sdk';
-import { isFuncAndRun, array2Tree } from '@/utils/helper';
+// import { helper.isFuncAndRun, array2Tree } from '@/utils/helper';
+import helper from '@/utils/helper';
 
 function getQueryString(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -19,14 +20,24 @@ let auth = null;
 class cloudFunc {
   constructor() {
     // 初始化 CloudBase
-    app = cloudbase.init({
-      env: envId,
-    });
-    // 初始化数据库
-    db = app.database();
-    auth = app.auth({
-      persistence: 'local',
-    });
+    if (!app || !db || !auth) {
+      app = cloudbase.init({
+        env: envId,
+      });
+      // 初始化数据库
+      db = app.database();
+      auth = app.auth({
+        persistence: 'local',
+      });
+    }
+  }
+
+  getApp() {
+    return app;
+  }
+
+  getDB() {
+    return db;
   }
 
   async isLogin() {
@@ -39,10 +50,10 @@ class cloudFunc {
       .signUpWithEmailAndPassword(email, password)
       .then(res => {
         // 发送验证邮件成功
-        isFuncAndRun(callBack);
+        helper.isFuncAndRun(callBack);
       })
       .catch(res => {
-        isFuncAndRun(errCallback);
+        helper.isFuncAndRun(errCallback);
       });
   }
   checkHasLogin() {
@@ -57,13 +68,13 @@ class cloudFunc {
       auth
         .signInWithEmailAndPassword(email, password)
         .then(res => {
-          isFuncAndRun(callBack);
+          helper.isFuncAndRun(callBack);
         })
         .catch(res => {
-          isFuncAndRun(errCallback);
+          helper.isFuncAndRun(errCallback);
         });
     } else {
-      isFuncAndRun(callBack);
+      helper.isFuncAndRun(callBack);
     }
   }
   // 重置邮箱登录密码
@@ -72,10 +83,10 @@ class cloudFunc {
       .sendPasswordResetEmail(email)
       .then(() => {
         // 发送重置密码邮件成功
-        isFuncAndRun(callBack);
+        helper.isFuncAndRun(callBack);
       })
       .catch(res => {
-        isFuncAndRun(errCallback);
+        helper.isFuncAndRun(errCallback);
       });
   }
 
@@ -87,11 +98,11 @@ class cloudFunc {
         .signIn()
         .then(() => {
           // this.setButtonStatus(false)
-          isFuncAndRun(callBack);
+          helper.isFuncAndRun(callBack);
         });
     } else {
       // this.setButtonStatus(false)
-      isFuncAndRun(callBack);
+      helper.isFuncAndRun(callBack);
     }
   }
 
@@ -302,8 +313,8 @@ class cloudFunc {
         ...s,
         parentId: s.cateId,
       }));
-      const resList = array2Tree([...cateList, ...atList], '');
-      isFuncAndRun(cb, resList);
+      const resList = helper.array2Tree([...cateList, ...atList], '');
+      helper.isFuncAndRun(cb, resList);
     });
   }
 }

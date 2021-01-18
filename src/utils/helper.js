@@ -6,7 +6,7 @@ class helper {
     let res = [];
     data.forEach(item => {
       if (item.parentId === pid) {
-        let itemChildren = array2Tree(data, item._id, level + 1);
+        let itemChildren = helper.array2Tree(data, item._id, level + 1);
         if (itemChildren.length) {
           item.children = itemChildren;
         }
@@ -15,7 +15,7 @@ class helper {
     });
     return res;
   }
-  
+
   static isEmpty(val) {
     if (
       val === null ||
@@ -26,28 +26,28 @@ class helper {
     }
     return false;
   }
-  
+
   static isFuncAndRun(func, ...params) {
-    if (!isEmpty(func) && typeof func === 'function') {
+    if (!helper.isEmpty(func) && typeof func === 'function') {
       func(...params);
     }
   }
-  
+
   static log(...params) {
     console.log(...params);
   }
-  
+
   static getExtens(file) {
     const tmp = file.split('.');
     return tmp[tmp.length - 1];
   }
-  
+
   static createPictureUrl(file) {
     const name = file.name;
     const ext = getExtens(name);
     return `${dayjs().format('YYYYMMDDHHmmss')}.${ext}`;
   }
-  
+
   static calHeadLevel(str) {
     const tmpArr = str.split('');
     const len = tmpArr.length;
@@ -60,7 +60,7 @@ class helper {
     }
     return res;
   }
-  
+
   static getTreeList() {
     const list = [
       { id: 1, title: 'html5', parentId: 0 },
@@ -79,5 +79,4 @@ class helper {
   }
 }
 
-export default new helper();
-
+export default helper;
