@@ -3,7 +3,7 @@ import { Message } from 'antd';
 import helper from '@/utils/helper';
 import cloudFunc from '@/utils/cloudFunc';
 
-function useCategory() {
+function useArticle() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -107,4 +107,4 @@ function useCategory() {
   return [list, loading, getList, saveRecord, deleteRecord];
 }
 
-export default useCategory;
+export default useArticle;
