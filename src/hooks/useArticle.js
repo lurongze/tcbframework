@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Message } from 'antd';
+import { message } from 'antd';
 import helper from '@/utils/helper';
 import cloudFunc from '@/utils/cloudFunc';
 
@@ -36,10 +36,10 @@ function useArticle() {
         .remove()
         .then(res => {
           if (res?.deleted) {
-            Message.success('删除成功！');
+            message.success('删除成功！');
             getList(cateId);
           } else {
-            Message.error('删除失败！');
+            message.error('删除失败！');
           }
         })
         .finally(() => {
@@ -65,7 +65,7 @@ function useArticle() {
           .add({ ...resValues, addTime: new Date() })
           .then(res => {
             if (res?.id) {
-              Message.success('新增成功！');
+              message.success('新增成功!');
               // console.log('values.noteId', values.noteId)
               // getList(values.noteId);
               cloudFunc
@@ -74,7 +74,7 @@ function useArticle() {
                 .add({ articleId: res.id, addTime: new Date() });
               helper.isFuncAndRun(callback);
             } else {
-              Message.error('新增失败！');
+              message.error('新增失败！');
             }
           })
           .finally(() => {
@@ -91,10 +91,10 @@ function useArticle() {
           .update({ ...resValues, updateTime: new Date() })
           .then(res => {
             if (res?.updated) {
-              Message.success('保存成功！');
+              message.success('保存成功！');
               // getList(values.noteId);
             } else {
-              Message.error('保存失败！');
+              message.error('保存失败！');
             }
           })
           .finally(() => {

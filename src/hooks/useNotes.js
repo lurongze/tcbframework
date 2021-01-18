@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Message } from 'antd';
+import { message } from 'antd';
 import cloudFunc from '@/utils/cloudFunc';
 
 function useNotes() {
@@ -36,10 +36,10 @@ function useNotes() {
         .then(res => {
           console.log('deleteNote', res);
           if (res?.deleted) {
-            Message.success('删除成功！');
+            message.success('删除成功！');
             getList();
           } else {
-            Message.error('删除失败！');
+            message.error('删除失败！');
           }
         })
         .finally(() => {
@@ -65,10 +65,10 @@ function useNotes() {
           .add({ ...resValues, addTime: new Date() })
           .then(res => {
             if (res?.id) {
-              Message.success('新增成功！');
+              message.success('新增成功！');
               getList();
             } else {
-              Message.error('新增失败！');
+              message.error('新增失败！');
             }
           })
           .finally(() => {
@@ -85,10 +85,10 @@ function useNotes() {
           .update({ ...resValues, updateTime: new Date() })
           .then(res => {
             if (res?.updated) {
-              Message.success('保存成功！');
+              message.success('保存成功！');
               getList();
             } else {
-              Message.error('保存失败！');
+              message.error('保存失败！');
             }
           })
           .finally(() => {
