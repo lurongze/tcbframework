@@ -20,13 +20,15 @@ import {
 } from '@ant-design/icons';
 import useArticleContent from '@/hooks/useArticleContent';
 import Picture from '@/components/article/picture';
-import helper from '@/utils/helper';
+import { helper } from '@/utils';
+import styles from './index.less';
 
 function articleContent(props) {
   const {
     match: {
       params: { title = 'xxx', articleId = '' },
     },
+    onChangeRoute,
   } = props;
   const editorRef = useRef();
   const [isEditor, setIsEditor] = useState(false);
@@ -59,24 +61,26 @@ function articleContent(props) {
     <PageHeader
       ghost={false}
       onBack={null}
-      title={title}
+      title={decodeURIComponent(title)}
       extra={[
-        <Dropdown.Button
-          key="save"
+        <Button
+          key="test"
           type="primary"
-          loading={loading}
-          onClick={doSave}
-          overlay={
-            <Menu onClick={() => doSave(true)}>
-              <Menu.Item key="1" icon={<SaveOutlined />}>
-                保存并返回
-              </Menu.Item>
-            </Menu>
-          }
+          onClick={() => {
+            helper.isFuncAndRun(onChangeRoute, [
+              {
+                path: '/articleContent',
+                name: '笔记内容管理',
+              },
+            ]);
+          }}
         >
+          测试
+        </Button>,
+        <Button key="save" type="primary" onClick={doSave}>
           <SaveOutlined />
           保存
-        </Dropdown.Button>,
+        </Button>,
         <Picture key="picture">
           <Button type="primary" style={{ marginLeft: 15 }}>
             <PictureOutlined />
@@ -102,25 +106,23 @@ function articleContent(props) {
         </Button>,
       ]}
     >
-      <div>
-        <Editor
-          height="calc(100vh - 180px)"
-          theme="dark"
-          language="markdown"
-          value={record?.content || ''}
-          editorDidMount={(e, ed) => {
-            // setIsEditorReady(true);
-            ed.onKeyDown(kd => {
-              // ctrl+s 保存内容
-              if (kd?.ctrlKey && kd.keyCode === 49) {
-                kd.preventDefault();
-                saveArticle(false);
-              }
-            });
-            editorRef.current = e;
-          }}
-        />
-      </div>
+      <Editor
+        className={styles.editorItem}
+        height="calc(100vh - 180px)"
+        language="markdown"
+        value={record?.content || ''}
+        editorDidMount={(e, ed) => {
+          // setIsEditorReady(true);
+          ed.onKeyDown(kd => {
+            // ctrl+s 保存内容
+            if (kd?.ctrlKey && kd.keyCode === 49) {
+              kd.preventDefault();
+              saveArticle(false);
+            }
+          });
+          editorRef.current = e;
+        }}
+      />
     </PageHeader>
   );
 }

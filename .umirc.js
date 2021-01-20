@@ -6,11 +6,16 @@ export default defineConfig({
   },
   routes: [
     { path: '/login', component: '@/pages/login' },
+    { path: '/site', component: '@/pages/site' },
     {
       path: '/',
       component: '@/pages/app',
       routes: [
-        { title: '笔记管理', path: '/index', component: '@/pages/index' },
+        {
+          title: '笔记管理',
+          path: '/',
+          component: '@/pages/index',
+        },
         {
           title: '分类管理',
           path: '/category/:noteId/:title',

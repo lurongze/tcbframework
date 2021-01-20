@@ -1,29 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, cloneElement } from 'react';
 import { Empty } from 'antd';
 import { history } from 'umi';
 import { Button, Result, Avatar, Tag, Input } from 'antd';
-import { CrownOutlined, UserOutlined, SmileOutlined } from '@ant-design/icons';
+import {
+  BookOutlined,
+  UserOutlined,
+  SettingOutlined,
+  FileAddOutlined,
+} from '@ant-design/icons';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
 import useLogin from '@/hooks/useLogin';
+import useNotes from '@/hooks/useNotes';
 
-const defaultProps = {
-  routes: [
-    {
-      path: '/index',
-      name: '笔记管理',
-      icon: <CrownOutlined />,
-    },
-  ],
-};
+const defaultRoute = [
+  {
+    path: '/',
+    name: '笔记管理',
+    icon: <SettingOutlined />,
+  },
+];
 
 function App(props) {
   const { children } = props;
   const [initing, setIniting] = useState(true);
-  const [route, setRoute] = useState(() => {
-    return defaultProps;
-  });
-
+  const [route, setRoute] = useState([]);
   const isLogin = useLogin();
+  const [noteList, _, getNoteList] = useNotes();
   useEffect(() => {
     if (!isLogin) {
       return history.push('/login');
@@ -32,13 +34,29 @@ function App(props) {
 
   useEffect(() => {
     setIniting(false);
+    getNoteList();
   }, []);
+
+  useEffect(() => {
+    if (route.length === 0) {
+      const resList = noteList.map(s => {
+        return {
+          path: `/category/${s._id}/${encodeURIComponent(s.title)}`,
+          name: s.title,
+          icon: <BookOutlined />,
+        };
+      });
+      setRoute(resList);
+    }
+  }, [noteList]);
 
   return initing ? (
     <Empty description="页面初始化中..." image={Empty.PRESENTED_IMAGE_SIMPLE} />
   ) : (
     <ProLayout
-      route={route}
+      route={{
+        routes: [...defaultRoute, ...route],
+      }}
       navTheme="light"
       fixSiderbar
       headerRender={false}
@@ -88,7 +106,11 @@ function App(props) {
           </Button>,
         ]}
       >
-        {children}
+        {cloneElement(children, {
+          onChangeRoute(res) {
+            setRoute(res);
+          },
+        })}
       </PageContainer>
     </ProLayout>
   );

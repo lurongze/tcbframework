@@ -44,7 +44,7 @@ class helper {
 
   static createPictureUrl(file) {
     const name = file.name;
-    const ext = getExtens(name);
+    const ext = helper.getExtens(name);
     return `${dayjs().format('YYYYMMDDHHmmss')}.${ext}`;
   }
 

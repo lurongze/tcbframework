@@ -8,7 +8,7 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
-import helper from '@/utils/helper';
+import { helper } from '@/utils';
 import useArticle from '@/hooks/useArticle';
 
 export default props => {
@@ -35,7 +35,6 @@ export default props => {
       title={title}
       trigger={trigger}
       width="30vw"
-      loading={loading}
       modalProps={{
         onCancel: () => console.log('run'),
         okText: '保存',

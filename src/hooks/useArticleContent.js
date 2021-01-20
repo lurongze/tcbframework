@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { message } from 'antd';
-import helper from '@/utils/helper';
+import { helper } from '@/utils';
 import cloudFunc from '@/utils/cloudFunc';
 
 function useCategory() {

@@ -1,0 +1,61 @@
+{
+  "version": "2.0",
+  "envId": "{{env.ENV_ID}}",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "functionRoot": "cloudfunctions",
+  "framework": {
+    "name": "adroit-book",
+    "plugins": {
+      "website": {
+        "use": "@cloudbase/framework-plugin-website",
+        "inputs": {
+          "outputPath": "dist"
+        }
+      },
+      "db": {
+        "use": "@cloudbase/framework-plugin-database",
+        "inputs": {
+          "collections": [
+            {
+              "collectionName": "notes",
+              "description": "笔记",
+              "aclTag": "READONLY"
+            },
+            {
+              "collectionName": "categories",
+              "description": "分类",
+              "aclTag": "READONLY"
+            },
+            {
+              "collectionName": "article",
+              "description": "文章",
+              "aclTag": "READONLY"
+            },
+            {
+              "collectionName": "articleContent",
+              "description": "文章内容",
+              "aclTag": "READONLY",
+              "createIndexes": [
+                {
+                  "name": "文章ID",
+                  "unique": true,
+                  "keys": [
+                    {
+                      "name": "articleId",
+                      "direction": "1"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "collectionName": "pictures",
+              "description": "图片记录",
+              "aclTag": "READONLY"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

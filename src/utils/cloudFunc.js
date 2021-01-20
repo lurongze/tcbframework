@@ -1,6 +1,6 @@
 import cloudbase from '@cloudbase/js-sdk';
-// import { helper.isFuncAndRun, array2Tree } from '@/utils/helper';
-import helper from '@/utils/helper';
+import { helper } from '@/utils';
+import config from '../../cloudbaserc.json';
 
 function getQueryString(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -8,8 +8,11 @@ function getQueryString(name) {
   if (r != null) return unescape(r[2]);
   return null;
 }
-
-const envId = getQueryString('env') || 'wt-share-43bafa'; // 'wt-share-43bafa';
+let envId = getQueryString('env') || 'wt-share-43bafa';
+if (config?.envId && config.envId !== '{{env.ENV_ID}}') {
+  envId = config.envId;
+}
+console.log('环境ID', envId);
 if (!envId) {
   alert('链接错误！');
 }

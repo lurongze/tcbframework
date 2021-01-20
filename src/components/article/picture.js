@@ -1,28 +1,39 @@
 import React, { useState, useEffect, cloneElement } from 'react';
-import { Button, Drawer, message, Upload, Tooltip, Spin } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import { createPictureUrl } from '@/utils/helper';
+import { Button, Drawer, message, Upload, Tooltip, Spin, Modal } from 'antd';
+import { UploadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { helper } from '@/utils';
 import cloudFunc from '@/utils/cloudFunc';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ImgCrop from 'antd-img-crop';
-import classnames from 'classnames';
 
 import styles from './index.less';
 
 function Picture(props) {
-  const { dispatch, children } = props;
+  const { children } = props;
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
 
   function deletePicture(s) {
-    setLoading(true);
-    Promise.all([
-      cloudFunc.deleteFile(s.fileID),
-      cloudFunc.deletePicture(s._id),
-    ]).then(() => {
-      setLoading(false);
-      setList(list.filter(ss => ss._id !== s._id));
+    Modal.confirm({
+      icon: <ExclamationCircleOutlined />,
+      title: '删除操作不可恢复！确认删除图片吗？',
+      okText: '删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        setLoading(true);
+        Promise.all([
+          cloudFunc.deleteFile(s.fileID),
+          cloudFunc.deletePicture(s._id),
+        ]).then(() => {
+          setLoading(false);
+          setList(list.filter(ss => ss._id !== s._id));
+        });
+      },
+      onCancel() {
+        Modal.destroyAll();
+      },
     });
   }
 
@@ -30,7 +41,7 @@ function Picture(props) {
     name: 'file',
     beforeUpload: file => {
       setLoading(true);
-      const cloudPath = createPictureUrl(file);
+      const cloudPath = helper.createPictureUrl(file);
       cloudFunc
         .uploadPicture(cloudPath, file)
         .then(res => {
@@ -42,7 +53,7 @@ function Picture(props) {
                   cloudFunc.savePicture(res1).then(res2 => {
                     message.success('上传成功！');
                     setLoading(false);
-                    setList([{ url: res1.url }, ...list]);
+                    setList([{ ...res1, _id: res2.id }, ...list]);
                   });
                 } else {
                   setLoading(false);
@@ -57,9 +68,13 @@ function Picture(props) {
   };
 
   useEffect(() => {
-    cloudFunc.queryPicture().then(res => {
-      setList(res.data);
-    });
+    setLoading(true);
+    cloudFunc
+      .queryPicture()
+      .then(res => {
+        setList(res.data);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   function renderTitle(s) {
@@ -106,7 +121,7 @@ function Picture(props) {
           <div className={styles.pictureBlock}>
             {list.map(s => (
               <Tooltip key={s._id} title={renderTitle(s)}>
-                <img className={styles.pictureItem} src={s.url} />
+                <img alt="图片" className={styles.pictureItem} src={s.url} />
               </Tooltip>
             ))}
           </div>

@@ -5,7 +5,7 @@ import { history } from 'umi';
 import { BookOutlined } from '@ant-design/icons';
 import useNotes from '@/hooks/useNotes';
 import { helper } from '@/utils';
-function Index(props) {
+function Site(props) {
   const { onChangeRoute } = props;
   const [editableKeys, setEditableRowKeys] = useState([]);
   const [noteList, loading, getNoteList, saveNote, deleteNote] = useNotes();
@@ -117,4 +117,4 @@ function Index(props) {
   );
 }
 
-export default Index;
+export default Site;

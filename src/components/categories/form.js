@@ -8,7 +8,7 @@ import ProForm, {
   ProFormSelect,
 } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
-import helper from '@/utils/helper';
+import { helper } from '@/utils';
 import useCategory from '@/hooks/useCategory';
 
 export default props => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classname from 'classnames';
-import { calHeadLevel } from '@/utils/helper';
+import { helper } from '@/utils';
 import styles from './index.less';
 
 function Dir(props) {
@@ -8,26 +8,11 @@ function Dir(props) {
   const [list, setList] = useState([]);
   const [current, setCurrent] = useState('');
 
-  // useEffect(() => {
-  //   var io = new IntersectionObserver(entries => {
-  //     console.log(entries);
-  //   }, {});
-  //   list.map(s => {
-  //     // io.observe(document.getElementById(s))
-  //     console.log('document.getElementById(s)', s, document.getElementById(s));
-  //   });
-  //   // return ()=>{
-  //   //   list.map(s=>{
-  //   //     io.unobserve(document.getElementById(s))
-  //   //   });
-  //   // }
-  // }, [list]);
-
   useEffect(() => {
     if (dirList) {
       const levelList = [];
       let resList = dirList.map(s => {
-        const level = calHeadLevel(s);
+        const level = helper.calHeadLevel(s);
         // return level;
         levelList.push(level);
         return {
