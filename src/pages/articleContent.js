@@ -63,20 +63,6 @@ function articleContent(props) {
       onBack={null}
       title={decodeURIComponent(title)}
       extra={[
-        <Button
-          key="test"
-          type="primary"
-          onClick={() => {
-            helper.isFuncAndRun(onChangeRoute, [
-              {
-                path: '/articleContent',
-                name: '笔记内容管理',
-              },
-            ]);
-          }}
-        >
-          测试
-        </Button>,
         <Button key="save" type="primary" onClick={doSave}>
           <SaveOutlined />
           保存
@@ -93,6 +79,8 @@ function articleContent(props) {
             if (isEditor) {
               Modal.confirm({
                 title: '内容已被编辑过，是否直接返回',
+                okText: '直接返回',
+                cancelText: '取消',
                 onOk() {
                   history.goBack();
                 },
