@@ -1,7 +1,6 @@
 let tcbEnv = window._tcbEnv || {
-  TCB_SERVICE_DOMAIN:
-    'ad-6gycgrvu66b9cae2-1253286615.ap-shanghai.service.tcloudbase.com',
-  TCB_ENV_ID: 'wt-share-43bafa',
+  TCB_SERVICE_DOMAIN: '',
+  TCB_ENV_ID: '',
   TCB_DOMAIN: '',
 };
 if (tcbEnv.TCB_SERVICE_DOMAIN.length) {

@@ -23,17 +23,17 @@ import styles from './site.less';
 function Site(props) {
   const {
     match: {
-      params: { id = '', noteId = '' },
+      params: { id = '', noteId = '', title = '' },
     },
   } = props;
   const handle = useRef(null);
   const [hideMenu, setHideMenu] = useState(false);
   const [hideList, setHideList] = useState([]);
   const [DIRLIST, setDirList] = useState('');
+  const [HTML, setHTML] = useState('');
   const [treeList, loading, record, getRecord] = useSite(noteId);
 
   function toogleMenu(e, s, isIn, len = 0) {
-    console.log('toogleMenu', e, s, isIn, len);
     const id = s._id;
     if (!!len) {
       e.stopPropagation();
@@ -46,7 +46,7 @@ function Site(props) {
       setHideList(resList);
       localStorage.setItem('hideList', JSON.stringify(resList));
     } else {
-      history.push(`/site/${noteId}/${id}`);
+      history.push(`/site/${noteId}/${id}/${title}`);
     }
   }
 
@@ -54,6 +54,12 @@ function Site(props) {
     if (handle?.current) {
       handle.current.scrollTop = 0;
     }
+  }, [HTML]);
+
+  useEffect(() => {
+    const res = markdownFunc(record.content || '');
+    setHTML(res?.html || '');
+    setDirList(res?.dirList || []);
   }, [record]);
 
   useEffect(() => {
@@ -115,20 +121,30 @@ function Site(props) {
           className={classnames(styles.menuItem, styles.absoluteItem)}
           onClick={() => setHideMenu(true)}
         >
-          <div className={styles.menuTitle} style={{ textAlign: 'center' }}>
-            收起目录
+          <div
+            className={styles.menuTitle}
+            title={decodeURIComponent(title)}
+            style={{ flex: 1, fontWeight: 600 }}
+          >
+            {decodeURIComponent(title)}
+          </div>
+          <div
+            className={styles.menuTitle}
+            style={{ width: '60px', textAlign: 'center' }}
+          >
+            收起
             <LeftCircleOutlined />
           </div>
         </div>
         <div className={styles.menuItemContainer}>{treeRender(treeList)}</div>
       </div>
       <div className={styles.content} ref={handle}>
-        {record.content && !loading && (
+        {HTML && !loading && (
           <div className="markdown-body">
-            <div dangerouslySetInnerHTML={{ __html: record.content }} />
+            <div dangerouslySetInnerHTML={{ __html: HTML }} />
           </div>
         )}
-        {!record.content && !loading && (
+        {!HTML && !loading && (
           <div className={styles.emptyContent}>
             <Empty
               description="暂无数据"
@@ -136,16 +152,16 @@ function Site(props) {
             />
           </div>
         )}
+        {loading && (
+          <div className={styles.emptyContent}>
+            <Empty
+              description="数据加载中..."
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+          </div>
+        )}
       </div>
-      {/* <Dir dirList={record.dirList} /> */}
-      {loading && (
-        <div className={styles.loadingContainer}>
-          <Empty
-            description="数据加载中..."
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-          />
-        </div>
-      )}
+      <Dir dirList={DIRLIST} />
     </div>
   );
 }

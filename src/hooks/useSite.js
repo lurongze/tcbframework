@@ -7,7 +7,7 @@ const db = cloudFunc.getDB();
 
 function useSite(id) {
   const [treeList, setTreeList] = useState([]);
-  const [record, setRecord] = useState({ content: '', dirList: [] });
+  const [record, setRecord] = useState({ content: '' });
   const [loading, setLoading] = useState(false);
 
   function getList(noteId) {
@@ -40,8 +40,8 @@ function useSite(id) {
     }
   }
 
-  function getRecord(articleId) {
-    if (!loading) {
+  function getRecord(articleId = '') {
+    if (!loading && articleId.length && articleId !== 'empty') {
       setLoading(true);
       cloudFunc.signIn(() => {
         db.collection('articleContent')
@@ -52,7 +52,7 @@ function useSite(id) {
             if (res?.data && res.data.length > 0) {
               setRecord(res.data[0]);
             } else {
-              message.error('获取数据失败！');
+              setRecord({ content: '' });
             }
           })
           .finally(() => setLoading(false));

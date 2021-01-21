@@ -6,12 +6,10 @@ import {
   BookOutlined,
   UserOutlined,
   SettingOutlined,
-  LinkOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
 import cloudFunc from '@/utils/cloudFunc';
-import useLogin from '@/hooks/useLogin';
 import useNotes from '@/hooks/useNotes';
 
 const defaultRoute = [
@@ -26,18 +24,23 @@ function App(props) {
   const { children } = props;
   const [initing, setIniting] = useState(true);
   const [route, setRoute] = useState([]);
-  const isLogin = useLogin();
   const [noteList, _, getNoteList] = useNotes();
-  useEffect(() => {
-    if (!isLogin) {
-      return history.push('/login');
-    }
-  }, [isLogin]);
 
   useEffect(() => {
-    setIniting(false);
-    getNoteList();
-    cloudFunc.isEmailLogin();
+    console.log('useEffect');
+
+    cloudFunc.getLoginState().then(res => {
+      if (
+        res?._loginType &&
+        res._loginType === 'EMAIL' &&
+        cloudFunc.checkHasLogin
+      ) {
+        setIniting(false);
+        getNoteList();
+      } else {
+        return history.push('/login');
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -94,6 +97,7 @@ function App(props) {
       <PageContainer
         // onBack={() => null}
         // tags={<Tag color="blue">状态一</Tag>}
+        title="Adroit Book"
         header={{
           style: {
             padding: '4px 16px',

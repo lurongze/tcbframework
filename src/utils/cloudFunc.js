@@ -63,13 +63,15 @@ class cloudFunc {
   checkHasLogin() {
     return auth.hasLoginState();
   }
-  isEmailLogin() {
-    auth.getLoginState().then(res => {
-      console.log('isEmailLogin', res);
-    });
+  getLoginState() {
+    return auth.getLoginState();
   }
   signOut() {
-    auth.signOut();
+    try {
+      auth.signOut().catch(e => {
+        console.log('e', e);
+      });
+    } catch (e) {}
   }
   // 邮箱登录
   signInWithEmailAndPassword(email, password, callBack, errCallback) {

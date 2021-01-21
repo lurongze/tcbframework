@@ -67,7 +67,7 @@ function Index(props) {
     {
       title: '操作',
       valueType: 'option',
-      width: 250,
+      width: 300,
       render: (text, record, _, action) => [
         <a
           key="editable"
@@ -86,7 +86,11 @@ function Index(props) {
         >
           分类管理
         </a>,
-        <Link to={`/site/${record._id}`} target="_blank" key="3">
+        <Link
+          to={`/site/${record._id}/empty/${encodeURIComponent(record.title)}`}
+          target="_blank"
+          key="3"
+        >
           查看笔记内容
           <LinkOutlined />
         </Link>,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Card, message, Button, Input, notification } from 'antd';
 import { history } from 'umi';
 import cloudFunc from '@/utils/cloudFunc';
@@ -88,6 +88,13 @@ function Login() {
       },
     );
   }
+
+  useEffect(() => {
+    try {
+      cloudFunc.signOut();
+      localStorage.clear();
+    } catch (e) {}
+  }, []);
 
   return (
     <div className={styles.loginForm}>
