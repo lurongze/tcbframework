@@ -9,6 +9,8 @@
       "website": {
         "use": "@cloudbase/framework-plugin-website",
         "inputs": {
+          "installCommand": "yarn",
+          "buildCommand": "npm run build",
           "outputPath": "dist"
         }
       },

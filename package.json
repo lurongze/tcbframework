@@ -45,6 +45,7 @@
     "lint-staged": "^10.0.7",
     "markdown-it": "^12.0.3",
     "prettier": "^1.19.1",
+    "prismjs": "^1.23.0",
     "react": "^16.12.0",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.12.0",
@@ -65,49 +66,5 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.21.2",
     "husky": "^4.3.0"
-  },
-  "build": {
-    "productName": "DvaJSElectron",
-    "appId": "org.lurongze.DvaJSElectron",
-    "files": [
-      "dist/",
-      "main.js"
-    ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "msi"
-      ]
-    },
-    "linux": {
-      "target": [
-        "deb",
-        "rpm",
-        "snap",
-        "AppImage"
-      ],
-      "category": "Development"
-    },
-    "directories": {
-      "buildResources": "resources",
-      "output": "release"
-    }
-  },
-  "engines": {
-    "node": ">=8.0.0"
   }
 }

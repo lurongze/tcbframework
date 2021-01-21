@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Popconfirm } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
-import { history } from 'umi';
-import { BookOutlined } from '@ant-design/icons';
+import { history, Link } from 'umi';
+import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import useNotes from '@/hooks/useNotes';
 import { helper } from '@/utils';
 function Index(props) {
@@ -67,7 +67,7 @@ function Index(props) {
     {
       title: '操作',
       valueType: 'option',
-      width: 200,
+      width: 250,
       render: (text, record, _, action) => [
         <a
           key="editable"
@@ -86,6 +86,10 @@ function Index(props) {
         >
           分类管理
         </a>,
+        <Link to={`/site/${record._id}`} target="_blank" key="3">
+          查看笔记内容
+          <LinkOutlined />
+        </Link>,
         <Popconfirm
           title="确认删除？"
           okText="删除"

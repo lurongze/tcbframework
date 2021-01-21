@@ -4,9 +4,10 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  headScripts: [{ src: '/_init_tcb-env.js' }],
   routes: [
-    { path: '/login', component: '@/pages/login' },
-    { path: '/site', component: '@/pages/site' },
+    { title: '登录页', path: '/login', component: '@/pages/login' },
+    { title: '笔记页', path: '/site/:noteId/:id?', component: '@/pages/site' },
     {
       path: '/',
       component: '@/pages/app',

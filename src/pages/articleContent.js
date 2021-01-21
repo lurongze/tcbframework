@@ -114,6 +114,7 @@ function articleContent(props) {
         editorDidMount={(e, ed) => {
           // setIsEditorReady(true);
           ed.onKeyDown(kd => {
+            setIsEditor(true);
             // ctrl+s 保存内容
             if (kd?.ctrlKey && kd.keyCode === 49) {
               kd.preventDefault();

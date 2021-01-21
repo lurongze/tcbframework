@@ -1,6 +1,6 @@
 import cloudbase from '@cloudbase/js-sdk';
 import { helper } from '@/utils';
-import config from '../../cloudbaserc.json';
+import tcbEnv from '@/utils/tcbConfig';
 
 function getQueryString(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -8,10 +8,8 @@ function getQueryString(name) {
   if (r != null) return unescape(r[2]);
   return null;
 }
-let envId = getQueryString('env') || 'wt-share-43bafa';
-if (config?.envId && config.envId !== '{{env.ENV_ID}}') {
-  envId = config.envId;
-}
+
+let envId = tcbEnv.TCB_ENV_ID || '';
 console.log('环境ID', envId);
 if (!envId) {
   alert('链接错误！');
@@ -19,7 +17,6 @@ if (!envId) {
 let app = null; // 得放到外面才行
 let db = null;
 let auth = null;
-
 class cloudFunc {
   constructor() {
     // 初始化 CloudBase
@@ -43,6 +40,10 @@ class cloudFunc {
     return db;
   }
 
+  getAuth() {
+    return auth;
+  }
+
   async isLogin() {
     const loginState = await auth.getLoginState();
   }
@@ -61,6 +62,11 @@ class cloudFunc {
   }
   checkHasLogin() {
     return auth.hasLoginState();
+  }
+  isEmailLogin() {
+    auth.getLoginState().then(res => {
+      console.log('isEmailLogin', res);
+    });
   }
   signOut() {
     auth.signOut();
@@ -99,12 +105,13 @@ class cloudFunc {
       auth
         .anonymousAuthProvider()
         .signIn()
+        .catch(res => {
+          message.error('请确认开启了匿名登录！');
+        })
         .then(() => {
-          // this.setButtonStatus(false)
           helper.isFuncAndRun(callBack);
         });
     } else {
-      // this.setButtonStatus(false)
       helper.isFuncAndRun(callBack);
     }
   }

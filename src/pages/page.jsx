@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment, useRef } from 'react';
 import classnames from 'classnames';
 import request from '@/utils/request';
 import { history } from 'umi';
-import { Empty } from 'antd';
+import { markdownFunc } from '@/utils/markdownit';
 import {
   CaretDownOutlined,
   LayoutOutlined,
@@ -10,31 +10,36 @@ import {
   RightCircleOutlined,
   LeftCircleOutlined,
 } from '@ant-design/icons';
-import { markdownFunc } from '@/utils/markdownit';
-import cloudFunc from '@/utils/cloudFunc';
-import useSite from '@/hooks/useSite';
 import Dir from './dir';
 import 'github-markdown-css/github-markdown.css';
 import 'highlight.js/styles/lightfair.css';
 import 'prismjs/themes/prism-coy.css'; // prism-coy,prism-dark,prism-funky,prism-okaidia,prism-solarizedlight,prism-tomorrow,prism-twilight,prism-coy,prism
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
-import styles from './site.less';
+// import 'highlight.js/styles/github.css';
+import styles from './index.less';
 
-function Site(props) {
+const HOST = 'https://adroit-book-1253286615.cos.ap-guangzhou.myqcloud.com';
+
+function Index(props) {
   const {
     match: {
-      params: { id = '', noteId = '' },
+      params: { id = '' },
     },
   } = props;
   const handle = useRef(null);
   const [hideMenu, setHideMenu] = useState(false);
+  const [treeList, setTreeList] = useState([]);
   const [hideList, setHideList] = useState([]);
+  const [current, setCurrent] = useState('');
+  const [HTML, setHtml] = useState('');
   const [DIRLIST, setDirList] = useState('');
-  const [treeList, loading, record, getRecord] = useSite(noteId);
+  const [loading, setLoading] = useState(false);
+  const [timeStamp] = useState(() => {
+    return new Date().getTime();
+  });
 
   function toogleMenu(e, s, isIn, len = 0) {
-    console.log('toogleMenu', e, s, isIn, len);
-    const id = s._id;
+    const id = s.key;
     if (!!len) {
       e.stopPropagation();
       let resList = [];
@@ -46,32 +51,73 @@ function Site(props) {
       setHideList(resList);
       localStorage.setItem('hideList', JSON.stringify(resList));
     } else {
-      history.push(`/site/${noteId}/${id}`);
+      history.push(`/${id}`);
     }
   }
+
+  function getDirData() {
+    setLoading(true);
+    request
+      .get(`${HOST}/markdown-data/dirTree.json?rand=${timeStamp}`)
+      .then(res => {
+        console.log('res', res);
+        setTreeList(res?.data || []);
+      })
+      .finally(() => setLoading(false));
+  }
+
+  function getMarkdownData(fileName) {
+    if (!loading) {
+      setLoading(true);
+      request
+        .get(`${HOST}/markdown-data/${fileName}.md?rand=${timeStamp}`)
+        .then(res => {
+          const { html, dirList } = markdownFunc(res?.data || '');
+          setHtml(html);
+          setDirList(dirList);
+        })
+        .finally(() => setLoading(false));
+    }
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      setHideList(JSON.parse(localStorage.getItem('hideList') || '[]'));
+      getDirData();
+    }
+    document.body.setAttribute('class', 'line-numbers');
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      getMarkdownData(id);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (handle?.current) {
       handle.current.scrollTop = 0;
     }
-  }, [record]);
-
-  useEffect(() => {
-    getRecord(id);
-  }, [id]);
+  }, [HTML]);
 
   function treeRender(treeData) {
     return treeData.map(s => {
-      const inHideList = hideList.includes(s._id);
+      const inHideList = hideList.includes(s.key);
       const children = s?.children || [];
       const childrenLen = children.length;
+      const titleArr = s.title.split('.');
+      let title =
+        titleArr.length && typeof +titleArr[0] === 'number'
+          ? titleArr[1]
+          : titleArr[0];
+      // title = title.replace('.md', '');
       return (
-        <Fragment key={s._id}>
+        <Fragment key={s.key}>
           <div
             className={classnames(styles.menuItem, {
-              [styles.current]: id === s._id,
+              [styles.current]: id === s.key,
             })}
-            title={s.title}
+            title={title}
             onClick={e => toogleMenu(e, s, inHideList, childrenLen)}
           >
             <CaretDownOutlined
@@ -81,7 +127,7 @@ function Site(props) {
               })}
               style={{ marginLeft: `${s.level * 15}px` }}
             />
-            <div className={styles.menuTitle}>{s.title}</div>
+            <div className={styles.menuTitle}>{title}</div>
           </div>
           <div
             className={classnames(styles.subMenu, {
@@ -123,31 +169,25 @@ function Site(props) {
         <div className={styles.menuItemContainer}>{treeRender(treeList)}</div>
       </div>
       <div className={styles.content} ref={handle}>
-        {record.content && !loading && (
+        {HTML ? (
           <div className="markdown-body">
-            <div dangerouslySetInnerHTML={{ __html: record.content }} />
+            <div dangerouslySetInnerHTML={{ __html: HTML }} />
           </div>
-        )}
-        {!record.content && !loading && (
+        ) : (
           <div className={styles.emptyContent}>
-            <Empty
-              description="暂无数据"
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-            />
+            <CalculatorOutlined />
+            暂无数据
           </div>
         )}
       </div>
-      {/* <Dir dirList={record.dirList} /> */}
+      <Dir dirList={DIRLIST} />
       {loading && (
         <div className={styles.loadingContainer}>
-          <Empty
-            description="数据加载中..."
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-          />
+          <LayoutOutlined />
         </div>
       )}
     </div>
   );
 }
 
-export default Site;
+export default Index;

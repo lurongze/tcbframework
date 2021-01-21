@@ -1,14 +1,16 @@
 import React, { useEffect, useState, cloneElement } from 'react';
-import { Empty } from 'antd';
+import { Empty, Modal } from 'antd';
 import { history } from 'umi';
-import { Button, Result, Avatar, Tag, Input } from 'antd';
+import { Button, Avatar } from 'antd';
 import {
   BookOutlined,
   UserOutlined,
   SettingOutlined,
-  FileAddOutlined,
+  LinkOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
+import cloudFunc from '@/utils/cloudFunc';
 import useLogin from '@/hooks/useLogin';
 import useNotes from '@/hooks/useNotes';
 
@@ -35,6 +37,7 @@ function App(props) {
   useEffect(() => {
     setIniting(false);
     getNoteList();
+    cloudFunc.isEmailLogin();
   }, []);
 
   useEffect(() => {
@@ -49,6 +52,18 @@ function App(props) {
       setRoute(resList);
     }
   }, [noteList]);
+
+  function loginOut() {
+    Modal.confirm({
+      title: '确认退出登录吗？',
+      okText: '退出',
+      cancelText: '取消',
+      onOk() {
+        cloudFunc.signOut();
+        history.push('/login');
+      },
+    });
+  }
 
   return initing ? (
     <Empty description="页面初始化中..." image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -94,15 +109,9 @@ function App(props) {
           paddingTop: 48,
         }}
         extra={[
-          <Input.Search
-            key="search"
-            style={{
-              width: 240,
-            }}
-          />,
-          <Button key="3">操作一</Button>,
-          <Button key="2" type="primary">
-            操作一
+          <Button key="2" onClick={loginOut}>
+            退出登录
+            <LogoutOutlined />
           </Button>,
         ]}
       >

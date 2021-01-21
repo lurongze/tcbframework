@@ -1,0 +1,190 @@
+.body {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.content {
+  flex: 1;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.menuComponent {
+  position: relative;
+  width: 256px;
+  height: 100vh;
+  background-color: #f2f6fc;
+  transition: width 0.2s ease-in-out;
+  padding-top: 40px;
+  overflow: hidden;
+  &.hideMenu {
+    width: 0;
+  }
+  .absoluteTitle {
+    display: flex;
+    height: 40px;
+    position: absolute;
+    background-color: #f2f6fc;
+    width: 100%;
+    z-index: 9000;
+    left: 0;
+    top: 0;
+    // bottom: 0;
+  }
+  .menuItemContainer {
+    height: calc(100vh - 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .menuItem {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-left: 5px;
+    color: #333333;
+    &.absoluteItem {
+      position: absolute;
+      background-color: #f2f6fc;
+      width: 100%;
+      z-index: 9000;
+      left: 0;
+      top: 0;
+      // bottom: 0;
+    }
+    .menuTitle {
+      flex: 1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      height: 40px;
+      line-height: 40px;
+    }
+    &.current {
+      background-color: #ebeef5;
+    }
+    &:hover {
+      background-color: #ebeef5;
+    }
+    .menuIcon {
+      margin-right: 2px;
+      padding: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: #c0c4cc;
+      }
+      &.hidden {
+        visibility: hidden;
+      }
+      &.up {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  .subMenu {
+    // 不用display: none；这样虽然没有动画效果，但是效率相对好一点
+    display: block;
+    height: auto;
+    transition: all 1s ease-in-out;
+    overflow: hidden;
+    &.hidden {
+      height: 0;
+    }
+  }
+}
+.openMenu {
+  display: flex;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 30vh;
+  cursor: pointer;
+  background-color: #f2f6fc;
+}
+.dirFixed {
+  // position: fixed;
+  // top: 20vh;
+  // transform: translateY(-50%);
+  // right: 10px;
+  // border: 1px solid #e5e5e5;
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 350px;
+  margin-left: 20px;
+  margin-top: 15vh;
+  max-height: 70vh;
+  overflow-y: auto;
+  // box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.08),
+  //   0 9px 28px 0 rgba(0, 0, 0, 0.05), 0 12px 48px 16px rgba(0, 0, 0, 0.03);
+  .dir {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px 5px;
+    cursor: pointer;
+    color: #24292e;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+    &.active {
+      color: #1890ff;
+      border-left: 1px solid #1890ff;
+    }
+    &:hover {
+      color: #1890ff;
+    }
+    .point {
+      font-size: 20px;
+      font-weight: bolder;
+      margin-right: 2px;
+    }
+  }
+}
+
+.loadingContainer {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 999;
+}
+.emptyContent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 700px) {
+  .dirFixed {
+    width: 100vw;
+  }
+  .menuComponent {
+    width: 90vw;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .dirFixed {
+    display: none;
+  }
+  .menuComponent {
+    width: 100vw;
+  }
+}
