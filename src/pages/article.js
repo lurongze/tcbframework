@@ -106,8 +106,9 @@ function Category(props) {
           title="新增文章"
           record={{
             sort: 50,
-            parentId: '',
+            parentId: cateId,
             level: 0,
+            noteId,
             cateId,
           }}
           onSuccess={() => {
