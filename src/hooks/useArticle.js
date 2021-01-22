@@ -13,7 +13,7 @@ function useArticle() {
       cloudFunc
         .getDB()
         .collection('article')
-        .where({ cateId })
+        .where({ cateId, _openid: cloudFunc.getUID() })
         .orderBy('sort', 'asc')
         .limit(1000)
         .get()

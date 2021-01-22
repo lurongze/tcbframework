@@ -4,7 +4,6 @@ import cloudFunc from '@/utils/cloudFunc';
 import { message } from 'antd';
 
 const db = cloudFunc.getDB();
-
 function useSite(id) {
   const [treeList, setTreeList] = useState([]);
   const [record, setRecord] = useState({ content: '' });
@@ -15,13 +14,13 @@ function useSite(id) {
       setLoading(true);
       const categoryPromise = db
         .collection('categories')
-        .where({ noteId })
+        .where({ noteId, _openid: cloudFunc.getUID() })
         .orderBy('sort', 'asc')
         .limit(1000)
         .get();
       const articlesPromise = db
         .collection('article')
-        .where({ noteId })
+        .where({ noteId, _openid: cloudFunc.getUID() })
         .orderBy('sort', 'asc')
         .limit(1000)
         .get();

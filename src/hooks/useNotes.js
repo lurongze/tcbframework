@@ -14,6 +14,7 @@ function useNotes() {
         .getDB()
         .collection('notes')
         .orderBy('sort', 'asc')
+        .where({ _openid: cloudFunc.getUID() })
         .limit(100)
         .get()
         .then(res => {

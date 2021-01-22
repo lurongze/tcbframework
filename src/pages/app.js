@@ -27,7 +27,7 @@ function App(props) {
   const [noteList, _, getNoteList] = useNotes();
 
   useEffect(() => {
-    console.log('useEffect');
+    console.log('useEffect', cloudFunc.getUID());
 
     cloudFunc.getLoginState().then(res => {
       if (
@@ -113,6 +113,7 @@ function App(props) {
           paddingTop: 48,
         }}
         extra={[
+          <Button type="primary">{cloudFunc.getUserEmail()}</Button>,
           <Button key="2" onClick={loginOut}>
             退出登录
             <LogoutOutlined />

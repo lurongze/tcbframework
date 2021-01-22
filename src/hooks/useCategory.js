@@ -15,7 +15,7 @@ function useCategory() {
       cloudFunc
         .getDB()
         .collection('categories')
-        .where({ noteId })
+        .where({ noteId, _openid: cloudFunc.getUID() })
         .orderBy('sort', 'asc')
         .limit(1000)
         .get()

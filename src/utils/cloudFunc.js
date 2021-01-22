@@ -44,6 +44,17 @@ class cloudFunc {
     return auth;
   }
 
+  getUID() {
+    console.log('auth.currentUser', auth?.currentUser);
+    const uid = auth?.currentUser?.uid || '';
+    return uid;
+  }
+
+  getUserEmail() {
+    const email = auth?.currentUser?.email || '';
+    return email;
+  }
+
   async isLogin() {
     const loginState = await auth.getLoginState();
   }

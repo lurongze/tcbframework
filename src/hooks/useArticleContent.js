@@ -13,7 +13,7 @@ function useCategory() {
       cloudFunc
         .getDB()
         .collection('articleContent')
-        .where({ articleId })
+        .where({ articleId, _openid: cloudFunc.getUID() })
         .limit(1)
         .get()
         .then(res => {

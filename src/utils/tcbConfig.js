@@ -1,6 +1,6 @@
 let tcbEnv = window._tcbEnv || {
   TCB_SERVICE_DOMAIN: '',
-  TCB_ENV_ID: '',
+  TCB_ENV_ID: 'wt-share-43bafa',
   TCB_DOMAIN: '',
 };
 if (tcbEnv.TCB_SERVICE_DOMAIN.length) {
