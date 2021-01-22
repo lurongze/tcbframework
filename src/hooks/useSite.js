@@ -14,13 +14,13 @@ function useSite(id) {
       setLoading(true);
       const categoryPromise = db
         .collection('categories')
-        .where({ noteId, _openid: cloudFunc.getUID() })
+        .where({ noteId })
         .orderBy('sort', 'asc')
         .limit(1000)
         .get();
       const articlesPromise = db
         .collection('article')
-        .where({ noteId, _openid: cloudFunc.getUID() })
+        .where({ noteId })
         .orderBy('sort', 'asc')
         .limit(1000)
         .get();
