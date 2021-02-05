@@ -1,5 +1,4 @@
 import markdownIt from 'markdown-it';
-import hljs from 'highlight.js';
 import Prism from 'prismjs';
 import tcbEnv from '@/utils/tcbConfig';
 
@@ -11,11 +10,10 @@ export function markdownFunc(mdData) {
       if (lang) {
         try {
           let resHtml = Prism.highlight(str, Prism.languages.javascript, lang);
-          // console.log('resHtml', resHtml.split('\n'));
           resHtml = resHtml
             .split('\n')
             .map((s, i) => {
-              return `<span style='color:#333;margin-right:5px;display:inline-block;min-width:15px;'>${i}</span>${s}`;
+              return `<span style='color:#333;margin-right:5px;display:inline-block;width:15px;'>${i}</span>${s}`;
             })
             .join('\n');
           return resHtml;
