@@ -9,14 +9,7 @@ export function markdownFunc(mdData) {
     highlight: function(str, lang) {
       if (lang) {
         try {
-          let resHtml = Prism.highlight(str, Prism.languages.javascript, lang);
-          resHtml = resHtml
-            .split('\n')
-            .map((s, i) => {
-              return `<span style='color:#333;margin-right:5px;display:inline-block;width:15px;'>${i}</span>${s}`;
-            })
-            .join('\n');
-          return resHtml;
+          return Prism.highlight(str, Prism.languages.javascript, lang);
         } catch (__) {
           return '';
         }
@@ -57,6 +50,40 @@ export function markdownFunc(mdData) {
       }
     }
     return `<${token.tag} src='${src}'`;
+  };
+
+  const { fence, code_block: codeBlock } = md.renderer.rules;
+
+  const wrap = wrapped => (...args) => {
+    const [tokens, idx] = args;
+    const token = tokens[idx];
+    const rawCode = wrapped(...args);
+    console.log('rawCode', rawCode);
+    return (
+      `<!--beforebegin--><div class="language-${token.info.trim()} extra-class">` +
+      `<!--afterbegin-->${rawCode}<!--beforeend--></div><!--afterend-->`
+    );
+  };
+
+  md.renderer.rules.fence = wrap(fence);
+  md.renderer.rules.code_block = wrap(codeBlock);
+
+  md.renderer.rules.fence = (...args) => {
+    const rawCode = fence(...args);
+    const code = rawCode.slice(
+      rawCode.indexOf('<code'),
+      rawCode.indexOf('</code>'),
+    );
+
+    const lines = code.split('\n');
+    const lineNumbersCode = [...Array(lines.length - 1)]
+      .map((line, index) => `<span class="line-number">${index + 1}</span>`)
+      .join('');
+    console.log('code', rawCode);
+    const lineNumbersWrapperCode = `<div class="line-numbers-wrapper">${lineNumbersCode}</div>`;
+    const finalCode = `<div style='position:relative;'>${lineNumbersWrapperCode}${rawCode}</div>`;
+
+    return finalCode;
   };
 
   const html = md.render(mdData);

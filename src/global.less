@@ -10,6 +10,34 @@
   max-width: 980px;
   margin: 0 auto;
   padding: 45px;
+  pre {
+    padding-left: 35px;
+  }
+  .line-numbers-wrapper {
+    display: flex;
+    width: 30px;
+    flex-wrap: wrap;
+    height: 100%;
+    align-items: flex-start;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-right: 1px solid black;
+    padding: 16px 0;
+    line-height: 1.45;
+    background-color: black;
+    box-sizing: border-box;
+  }
+  .line-number {
+    width: 30px;
+    line-height: 1.45;
+    font-size: 85%;
+    text-align: center;
+    color: white;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
 }
 ::-webkit-scrollbar {
   /*滚动条整体样式*/
