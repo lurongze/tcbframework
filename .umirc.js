@@ -7,6 +7,7 @@ export default defineConfig({
   headScripts: [{ src: '/_init_tcb-env.js' }],
   routes: [
     { title: '登录页', path: '/login', component: '@/pages/login' },
+    { title: '编辑器', path: '/editor', component: '@/pages/editor' },
     {
       title: '笔记页',
       path: '/site/:noteId/:id/:title',

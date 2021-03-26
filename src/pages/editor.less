@@ -1,0 +1,37 @@
+.page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  .content {
+    display: flex;
+    width: 100vw;
+    flex: 1;
+    .editor {
+      flex: 1;
+      border: 1px solid black;
+      height: 100%;
+    }
+    .sepLine {
+      height: 100%;
+      width: 5px;
+      &:hover {
+        background-color: pink;
+        cursor: ew-resize;
+      }
+    }
+    .preview {
+      height: 100%;
+      min-width: 20vw;
+      resize: horizontal;
+      overflow: auto;
+    }
+  }
+  .toolBar {
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

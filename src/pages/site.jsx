@@ -152,7 +152,7 @@ function Site(props) {
             />
           </div>
         )}
-        {loading && (
+        {!HTML && loading && (
           <div className={styles.emptyContent}>
             <Empty
               description="数据加载中..."

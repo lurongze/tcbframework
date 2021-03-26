@@ -32,7 +32,6 @@ function useSite(id) {
             parentId: s.cateId,
           }));
           const resList = helper.array2Tree([...cateList, ...atList], '');
-          console.log('resList', resList);
           setTreeList(resList);
         })
         .finally(() => setLoading(false));
